@@ -1,14 +1,14 @@
 <?php
-
+// * Se actualiza controlador para ser usado con las vistas de la carpeta views/proyectos
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\ProyectoModel;
 
 class MantenedorObtenerController extends Controller
 {
-    public function get()
+    public function index()
     {
-        return "Retorna todos los valores";
+        $proyectos = ProyectoModel::allProjects();
+        return view('proyectos.index', compact('proyectos'));
     }
 }
-

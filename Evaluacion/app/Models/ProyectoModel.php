@@ -1,71 +1,62 @@
 <?php
 
+// * Se actualiza el modelo para ser usado con datos estáticos
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProyectoModel extends Model
 {
-    use HasFactory;
-    private $id;
-    private $nombre;
-    private $fechaInicio;
-    private $estado;
-    private $responsable;
-    private $monto;
+    public static $proyectos = [
+        [
+            'id' => 1,
+            'nombre' => 'Proyecto A',
+            'fecha_inicio' => '2024-01-01',
+            'estado' => 'En progreso',
+            'responsable' => 'Juan Perez',
+            'monto' => 10000,
+        ],
+        [
+            'id' => 2,
+            'nombre' => 'Proyecto B',
+            'fecha_inicio' => '2024-02-01',
+            'estado' => 'Completado',
+            'responsable' => 'Ana Gomez',
+            'monto' => 15000,
+        ],
+    ];
 
-    public function __construct()
+    public static function allProjects()
     {
-        //constructor para poder instanciar el objeto
+        return collect(self::$proyectos);
     }
 
-    public function getId(){
-        return $this->id;
+    public static function findProject($id)
+    {
+        return collect(self::$proyectos)->firstWhere('id', $id);
     }
 
-    public function getNombre(){
-        return $this->nombre;
+    public static function addProject($data)
+    {
+        $id = count(self::$proyectos) + 1;
+        $data['id'] = $id;
+        self::$proyectos[] = $data;
     }
 
-    public function getFechaInicio(){
-        return $this->fechaInicio;
+    public static function updateProject($id, $data)
+    {
+        foreach (self::$proyectos as &$project) {
+            if ($project['id'] == $id) {
+                $project = array_merge($project, $data);
+                break;
+            }
+        }
     }
 
-    public function getEstado(){
-        return $this->estado;
+    public static function deleteProject($id)
+    {
+        self::$proyectos = array_filter(self::$proyectos, function ($project) use ($id) {
+            return $project['id'] != $id;
+        });
     }
-
-    public function getResponsable(){
-        return $this->responsable;
-    }
-    
-    public function getMonto(){
-        return $this->monto;
-    }
-
-    public function setId($_n){
-        $this->id = $_n;
-    }
-
-    public function setNombre($_n){
-        $this->nombre = $_n;
-    }
-
-    public function setFechaInicio($_n){
-        $this->fechaInicio = $_n;
-    }
-
-    public function setEstado($_n){
-        $this->estado = $_n;
-    }
-
-    public function setResponsable($_n){
-        $this->responsable = $_n;
-    }
-    
-    public function setMonto($_n){
-        $this->monto = $_n; 
-    }
-
 }

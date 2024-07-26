@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\MantenedorActualizarPorIdController;
 use App\Http\Controllers\MantenedorCrearController;
-use App\Http\Controllers\MantenedorEliminarPorIdController;
 use App\Http\Controllers\MantenedorObtenerController;
+use App\Http\Controllers\MantenedorActualizarPorIdController;
+use App\Http\Controllers\MantenedorEliminarPorIdController;
 use App\Http\Controllers\MantenedorObtenerPorIdController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,27 +11,12 @@ Route::get('/', function () {
     return view('ProyectoView');
 });
 
-Route::get('/proyecto', function () {
-    $control = new MantenedorObtenerController();
-    $retorno = $control->get();
-    return $retorno;
-    //return view('ProyectoView');
-});
-
-Route::get('/proyecto/{_id}', function ($_id) {
-    $control = new MantenedorObtenerPorIdController();
-    $retorno = $control->get($_id);
-    return $retorno;
-});
-
-Route::post('/proyecto', function () {
-    $control = new MantenedorCrearController();
-});
-
-Route::delete('proyecto/{_id}', function ($_id) {
-    $control = new MantenedorEliminarPorIdController();
-});
-
-Route::patch('proyecto/{_id}', function ($_id, $_nuevo) {
-    $control = new MantenedorActualizarPorIdController();
-});
+// * Se actualiza el archivo routes/web.php para que las rutas de los métodos del controlador sean más descriptivas	
+Route::get('/proyectos', [MantenedorObtenerController::class, 'index'])->name('proyectos.index');
+Route::get('/proyectos/create', [MantenedorCrearController::class, 'create'])->name('proyectos.create');
+Route::post('/proyectos', [MantenedorCrearController::class, 'store'])->name('proyectos.store');
+Route::get('/proyectos/{id}', [MantenedorObtenerPorIdController::class, 'show'])->name('proyectos.show');
+Route::get('/proyectos/{id}/edit', [MantenedorActualizarPorIdController::class, 'edit'])->name('proyectos.edit');
+Route::put('/proyectos/{id}', [MantenedorActualizarPorIdController::class, 'update'])->name('proyectos.update');
+Route::get('/proyectos/{id}/delete', [MantenedorEliminarPorIdController::class, 'delete'])->name('proyectos.delete');
+Route::delete('/proyectos/{id}', [MantenedorEliminarPorIdController::class, 'destroy'])->name('proyectos.destroy');

@@ -1,13 +1,14 @@
 <?php
-
+// * Se actualiza controlador para ser usado con las vistas de la carpeta views/proyectos
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\ProyectoModel;
 
 class MantenedorObtenerPorIdController extends Controller
 {
-    public function get($_id)
+    public function show($id)
     {
-        return "valores del id: {$_id}";
+        $proyecto = ProyectoModel::findProject($id);
+        return view('proyectos.show', compact('proyecto'));
     }
 }
